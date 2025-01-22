@@ -42,6 +42,7 @@ if ($receivedToken !== $expectedToken) {
 // 5) Create SlackService & parse
 $slackService  = new SlackService();
 $parsedMessage = $slackService->parseSlackMessage($payload);
+$rawMessage = json_encode($payload);
 
 // 6) If parseSlackMessage returns non-null, forward message to Telegram
 if ($parsedMessage !== null) {
@@ -56,6 +57,13 @@ if ($parsedMessage !== null) {
         error_log('[Telegram Error] ' . $e->getMessage());
     }
 }
+
+$botToken    = $_ENV['TELEGRAM_BOT_TOKEN']     ?? '';
+$botUsername = $_ENV['TELEGRAM_BOT_USERNAME']  ?? '';
+$chatId      = $_ENV['ALERTS_CHAT_TELEGRAM_ID'] ?? '';
+
+$notificationService = new NotificationService($botToken, $botUsername);
+$notificationService->notifyUser($chatId, $parsedMessage);
 
 // 7) Always respond with 200 OK so Slack doesn’t retry
 http_response_code(200);
