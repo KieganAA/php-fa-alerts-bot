@@ -11,6 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 // 1) Only accept POST from Slack
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
+    error_log('Method Not Allowed');
     exit('Method Not Allowed');
 }
 
@@ -20,6 +21,7 @@ $payload  = json_decode($rawInput, true);
 
 if (!$payload) {
     http_response_code(400);
+    error_log('Invalid JSON or empty payload.');
     exit('Invalid JSON or empty payload.');
 }
 
@@ -36,6 +38,8 @@ $expectedToken = $_ENV['SLACK_OUTGOING_WEBHOOK_TOKEN'] ?? '';
 $receivedToken = $payload['token'] ?? '';
 if ($receivedToken !== $expectedToken) {
     http_response_code(401);
+    error_log('Received token: ' . $receivedToken);
+    error_log('Unauthorized - invalid Slack token');
     exit('Unauthorized - invalid Slack token');
 }
 
@@ -43,6 +47,7 @@ if ($receivedToken !== $expectedToken) {
 $slackService  = new SlackService();
 $parsedMessage = $slackService->parseSlackMessage($payload);
 $rawMessage = json_encode($payload);
+error_log('Received message: ' . $rawMessage);
 
 // 6) If parseSlackMessage returns non-null, forward message to Telegram
 if ($parsedMessage !== null) {
