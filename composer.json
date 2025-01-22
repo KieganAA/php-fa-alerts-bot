@@ -1,0 +1,16 @@
+{
+  "name": "alexander.k/conference-telegram-bot",
+  "description": "Telegram Bot for a conference booth - notifications & demo registration",
+  "type": "project",
+  "require": {
+    "php": "^8.0",
+    "longman/telegram-bot": "^0.83.1",
+    "vlucas/phpdotenv": "^5.5",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
