@@ -47,7 +47,6 @@ if ($receivedToken !== $expectedToken) {
 $slackService  = new SlackService();
 $parsedMessage = $slackService->parseSlackMessage($payload);
 $rawMessage = json_encode($payload);
-error_log('Received message: ' . $rawMessage);
 
 // 6) If parseSlackMessage returns non-null, forward message to Telegram
 if ($parsedMessage !== null) {
