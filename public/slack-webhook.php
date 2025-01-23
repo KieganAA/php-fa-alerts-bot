@@ -53,7 +53,7 @@ error_log('Received message: ' . $rawMessage);
 if ($parsedMessage !== null) {
     $botToken    = $_ENV['TELEGRAM_BOT_TOKEN']     ?? '';
     $botUsername = $_ENV['TELEGRAM_BOT_USERNAME']  ?? '';
-    $chatId      = $_ENV['ALERTS_CHAT_TELEGRAM_ID'] ?? ''; // your Telegram group or user ID
+    $chatId      = $_ENV['ALERTS_CHAT_TELEGRAM_ID'] ?? '';
 
     try {
         $notificationService = new NotificationService($botToken, $botUsername);
@@ -68,7 +68,7 @@ $botUsername = $_ENV['TELEGRAM_BOT_USERNAME']  ?? '';
 $chatId      = $_ENV['ALERTS_CHAT_TELEGRAM_ID'] ?? '';
 
 $notificationService = new NotificationService($botToken, $botUsername);
-$notificationService->notifyUser($chatId, $parsedMessage);
+$notificationService->notifyUser($chatId, $rawMessage);
 
 // 7) Always respond with 200 OK so Slack doesn’t retry
 http_response_code(200);
